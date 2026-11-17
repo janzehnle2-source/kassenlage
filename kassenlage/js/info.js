@@ -1,0 +1,102 @@
+/* Kurze Erklärungen hinter den i-Knöpfen. Jede Erklärung beantwortet dieselben fünf Fragen. */
+(function (root) {
+  'use strict';
+  const FA = root.FA = root.FA || {};
+  const V = FA.ansichten = FA.ansichten || {};
+
+  // [Was es bedeutet, Welche Daten, Annahmen, Warum es abweichen kann, Was du prüfen kannst]
+  V.INFO = {
+    vermoegen: ['Gesamtvermögen',
+      'Alles, was du gerade hast: Girokonto, Trade Republic (Depot und Guthaben) und Konten, die du selbst eingetragen hast.',
+      'Dein eingetragener Kontostand plus alle importierten Buchungen, der Trade-Republic-Export und deine Depotwerte.',
+      'Das Depot wird mit dem letzten bekannten Kurs bewertet. Scalable Capital zählt als Altersvorsorge nicht mit.',
+      'Zwischen zwei Importen kennt die App keine neuen Buchungen und keine neuen Kurse.',
+      'Stimmt der Kontostand mit dem Online-Banking überein? Wenn nicht, trag ihn unter Vermögen neu ein.'],
+    veraenderung: ['Veränderung',
+      'Wie viel mehr oder weniger du im gewählten Zeitraum hast.',
+      'Der Unterschied zwischen dem ersten und dem letzten Tag des Verlaufs.',
+      'Gehalt, Ausgaben, Einzahlungen und Kursbewegungen stecken zusammen in dieser Zahl. Sie ist kein Gewinn.',
+      'Kurz vor dem Gehaltseingang sieht jeder Monat schlechter aus, als er ist.',
+      'Für das große Bild ist „1J“ oder „Max“ aussagekräftiger als eine Woche.'],
+    verfuegbar: ['Verfügbar',
+      'Was du in diesem Monat noch ausgeben kannst, ohne dass feste Zahlungen platzen.',
+      'Dein Kontostand minus feste Zahlungen und Sparpläne, die diesen Monat noch kommen.',
+      'Feste Zahlungen erkennt die App an gleichen Empfängern in mindestens drei Monaten.',
+      'Neue oder unregelmäßige Abbuchungen kennt die App noch nicht.',
+      'Unter Ausgaben, „Feste Zahlungen“, siehst du, was die App erkannt hat.'],
+    ueberschuss: ['Überschuss oder Defizit',
+      'Einnahmen minus Ausgaben in diesem Monat. Sparen und Investieren zählt nicht als Ausgabe.',
+      'Alle Buchungen des Monats außer Umbuchungen.',
+      'Was ins Depot geht, ist weiter dein Geld und steht deshalb nicht bei den Ausgaben.',
+      'Solange das Gehalt noch nicht da ist, steht hier ein Defizit.',
+      'Stimmen die Kategorien? Eine falsch zugeordnete Umbuchung verfälscht die Zahl.'],
+    prognose: ['Prognose zum Monatsende',
+      'Was am Monatsende voraussichtlich übrig bleibt, nach Ausgaben und Sparplänen.',
+      'Bisherige Buchungen, erwartetes Gehalt, feste Zahlungen und dein üblicher Tagesschnitt.',
+      'Für die restlichen Tage rechnet die App mit dem Durchschnitt der letzten bis zu drei Monate.',
+      'Größere Anschaffungen oder ein Einsatz mit anderen Ausgaben ändern das Ergebnis.',
+      'Je frischer der Import, desto genauer die Prognose.'],
+    torte: ['Wohin dein Geld geht',
+      'Die Aufteilung deiner Einnahmen in diesem Monat: Ausgaben nach Kategorie und der Überschuss in Grün.',
+      'Alle Buchungen des Monats. Kleine Kategorien stehen zusammen unter „Übrige Ausgaben“.',
+      'Der Überschuss teilt sich in Trade Republic, weiteres Sparen und das, was auf dem Girokonto blieb.',
+      'Ohne Geldeingang im Monat zeigt das Diagramm nur, wohin Geld geflossen ist.',
+      'Tippe auf ein Stück oder eine Zeile, um die Buchungen dahinter zu sehen.'],
+    trwert: ['Depotwert',
+      'Der geschätzte Wert deiner Wertpapiere bei Trade Republic.',
+      'Stückzahlen aus dem Export mal dem Kurs deines letzten Kaufs oder Verkaufs.',
+      'Die App kennt keine Börsenkurse. Trägst du einen Depotwert ein, gilt dieser ab dem Tag.',
+      'Zwischen zwei Käufen bewegt sich der echte Kurs, die Linie hier nicht.',
+      'Vergleiche den Wert gelegentlich mit der Trade-Republic-App und trag ihn ein.'],
+    trguthaben: ['Guthaben bei Trade Republic',
+      'Das Geld auf deinem Verrechnungskonto, das nicht in Wertpapieren steckt.',
+      'Alle Ein- und Auszahlungen, Käufe, Verkäufe, Zinsen, Gebühren und Steuern aus dem Export.',
+      'Ohne eingetragenen Stand rechnet die App ab 0 vor deiner ersten Buchung.',
+      'Fehlen Buchungen im Export, stimmt die Summe nicht.',
+      'Weicht der Wert von der Trade-Republic-App ab, trag das Guthaben von Hand ein.'],
+    netto: ['Voraussichtliches Netto',
+      'Eine Schätzung, was nach Steuern und Sozialabgaben aufs Konto kommt.',
+      'Deine Gehaltsbausteine, Steuerdaten und eingetragenen Einsätze.',
+      'Gerechnet wird mit den Formeln und Beitragssätzen für das gewählte Jahr.',
+      'Die echte Abrechnung kann wegen Zusatzbeitrag, Freibeträgen, Sachbezügen und Arbeitgeberregeln abweichen.',
+      'Vergleiche einen Monat mit deiner Lohnabrechnung und passe den Zusatzbeitrag der Krankenkasse an.'],
+    einsatz: ['Ergebnis des Einsatzes',
+      'Was dir der Einsatz netto mehr bringt als ein normaler Monat zu Hause.',
+      'Deine Angaben zu Tagen, Stunden, Zuschlag, Spesen und Kosten.',
+      'Zuschläge sind voll steuerpflichtig, Mehrstunden werden ausbezahlt, Pauschalen bleiben steuerfrei.',
+      'Die Firma kann anders abrechnen, zum Beispiel über das Stundenkonto.',
+      'Vergleiche nach der ersten Abrechnung und passe Zuschlag und Stunden an.'],
+    erstattung: ['Steuererstattung',
+      'Eine Schätzung, was du über die Steuererklärung zurückbekommst oder nachzahlst.',
+      'Dein geplanter Jahreslohn, die gezahlte Lohnsteuer und deine Werbungskosten.',
+      'Nur Lohn, Arbeitsweg, Einsatzkosten und Spenden. Weitere Einkünfte fehlen.',
+      'Der Bescheid hängt von Belegen und Angaben ab, die die App nicht kennt.',
+      'Trag Arbeitsweg und Arbeitstage ein. Verbindlich ist nur der Bescheid vom Finanzamt.'],
+    budget: ['Budget',
+      'Ein Betrag, den du dir pro Monat für eine Kategorie vornimmst.',
+      'Die Ausgaben der Kategorie im gewählten Monat.',
+      'Der Balken zeigt, wie viel vom Budget verbraucht ist.',
+      'Falsch zugeordnete Buchungen landen im falschen Budget.',
+      'Starte mit dem Durchschnitt der letzten Monate und senke ihn schrittweise.'],
+    sparquote: ['Zurückgelegt',
+      'Was im Schnitt vom Einkommen übrig bleibt, egal ob im Depot oder auf dem Konto.',
+      'Einnahmen minus Ausgaben der letzten bis zu drei vollen Monate.',
+      'Monate mit weniger als fünf Buchungen zählen nicht mit.',
+      'Einmalzahlungen wie Weihnachtsgeld oder ein Einsatz heben den Schnitt.',
+      'Schau dir die einzelnen Monate an, bevor du daraus einen Sparplan ableitest.'],
+    scalable: ['Altersvorsorge',
+      'Dein Depot bei Scalable Capital. Es zählt nicht zum Gesamtvermögen.',
+      'Deine Sparpläne, hochgerechnet aus Betrag und Starttermin, und dein eingetragener Depotwert.',
+      'Jede Sparplan-Ausführung gilt als pünktlich erfolgt.',
+      'Ausgesetzte Raten oder Einzelkäufe kennt die App nur, wenn du sie einträgst.',
+      'Trag einmal im Monat den Depotwert aus der Scalable-App ein.']
+  };
+  const FRAGEN = ['Was der Wert bedeutet', 'Welche Daten', 'Annahmen', 'Warum er abweichen kann', 'Was du prüfen kannst'];
+
+  V.i = key => '<button type="button" class="i" data-akt="info" data-key="' + key + '" aria-label="Erklärung anzeigen">i</button>';
+  V.infoBlatt = function (key) {
+    const e = V.INFO[key];
+    if (!e) return { titel: 'Erklärung', html: '<p>Dazu gibt es noch keine Erklärung.</p>' };
+    return { titel: e[0], html: '<dl class="erkl">' + FRAGEN.map((f, n) => '<dt>' + f + '</dt><dd>' + e[n + 1] + '</dd>').join('') + '</dl>' };
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
